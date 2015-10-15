@@ -1,7 +1,9 @@
 package com.romero.app;
 
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.slf4j.Logger;
@@ -24,13 +26,17 @@ public class HomeController {
 	 */
 	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public String home(Locale locale, Model model) {
-		logger.info("Welcome home! The client locale is {}.", locale);
+		logger.info("Welcome home Keith! The client locale is {}.", locale);
 		
 		int count = 1;
         while (count < 11) {
             System.out.println("Count is: " + count);
             count++;
         }
+        
+        List<String> list = new ArrayList<String>();
+        list.add("hello");
+        String s = list.get(0);   // no cast
 		
 		
 		Date date = new Date();

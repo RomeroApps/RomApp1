@@ -23,6 +23,24 @@
 	
 	<context:component-scan base-package="com.romero.app" />
 	
+<!-- Factory bean that creates the Mongo instance -->
+	<beans:bean id="mongo" class="org.springframework.data.mongodb.core.MongoFactoryBean">
+		<beans:property name="host" value="mongodb://romeroap:gjtaBMRE7IUF@localhost/romeroap_db1" />
+		<beans:property name="port" value="27017" />
+		
+		<!--  mongodb://romeroap_dbu1:gjtaBMRE7IUF@localhost/romeroap_db1 
+		-u romeroap_dbu1 -p gjtaBMRE7IUF uc3.nodecluster.net/romeroap_db1 -->
+	</beans:bean>
 	
+	
+	
+	<!-- MongoTemplate for connecting and quering the documents in the database -->
+	<beans:bean id="mongoTemplate" class="org.springframework.data.mongodb.core.MongoTemplate">
+		<beans:constructor-arg name="mongo" ref="mongo" />
+		<beans:constructor-arg name="databaseName" value="test" />
+	</beans:bean>
+
+	<!-- Use this post processor to translate any MongoExceptions thrown in @Repository annotated classes -->
+	<beans:bean class="org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor" />	
 	
 </beans:beans>

@@ -19,7 +19,7 @@ public class CustomerService {
 			mongoTemplate.createCollection(Customer.class);
 		}		
 		customer.setId(UUID.randomUUID().toString());
-		mongoTemplate.
+		
 		mongoTemplate.insert(customer, COLLECTION_NAME);
 	}
 	

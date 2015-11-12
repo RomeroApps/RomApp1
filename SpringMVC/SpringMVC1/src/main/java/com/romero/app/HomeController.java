@@ -6,6 +6,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,8 +17,10 @@ import org.springframework.ui.Model;
 import org.springframework.ui.ModelMap;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.View;
 import org.springframework.web.servlet.view.RedirectView;
 
@@ -44,12 +48,17 @@ public class HomeController {
 	@Autowired
 	private CustomerService customerService;
 	
+	   @RequestMapping(value = "/", method = RequestMethod.GET)  
+		public String getHome(ModelMap model) {  
+	        model.addAttribute("customerList", customerService.listCustomer());  
+	        return "output";  
+	    }  
+	   
 	   @RequestMapping(value = "/customer", method = RequestMethod.GET)  
 		public String getCustomerList(ModelMap model) {  
 	        model.addAttribute("customerList", customerService.listCustomer());  
 	        return "output";  
 	    }  
-	   
 
 	    @RequestMapping(value = "/customer/save", method = RequestMethod.POST)  
 		public View createPerson(@ModelAttribute Customer customer, ModelMap model) {
@@ -67,63 +76,36 @@ public class HomeController {
 	        return new RedirectView("/app/customer");  
 	    }
 	
+	    
+	    @RequestMapping(value = "/emp/get/{id}", method = RequestMethod.GET)
+	    public String getEmployee(Locale locale, Model model,@PathVariable("id") int id) {
+	        logger.info("Welcome user! Requested Emp ID is: "+id);
+	        Date date = new Date();
+	        DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
+	         
+	        String formattedDate = dateFormat.format(date);
+	         
+	        model.addAttribute("serverTime", formattedDate );
+	        model.addAttribute("id", id);
+	        model.addAttribute("name", "Pankaj");
+	         
+	        return "employee";
+	    }
+	     
+	    @RequestMapping(value="/login")
+	    public String login(HttpServletRequest request, Model model){
+	        return "login";
+	    }
+	     
+	    @RequestMapping(value="/logout")
+	    public String logout(){
+	        return "logout";
+	    }
+	     
+	    @RequestMapping(value="/denied")
+	    public String denied(){
+	        return "denied";
+	    }
+
 	
-	private Greeting Greeting;
-	
-	@Autowired
-    public void setGreeting(Greeting obj) {
-        this.Greeting = obj;
-    }
-	
-	/**
-	 * Simply selects the home view to render by returning its name.
-	 */
-	@RequestMapping(value = "/", method = RequestMethod.GET)
-	public String home(Locale locale, Model model) {
-		logger.info("Welcome home Keith! The client locale is {}.", locale);
-		
-		int count = 1;
-        while (count < 11) {
-            System.out.println("Count is: " + count);
-            count++;
-        }
-        
-        List<String> list = new ArrayList<String>();
-        list.add("hello");
-        String s = list.get(0);   // no cast
-		
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
-	}
-	@RequestMapping(value = "/greet", method = RequestMethod.GET)
-	public String greet(Locale locale, Model model) {
-		logger.info("Greetings..... Keith! The client locale is {}.", locale);
-		System.out.println(Greeting.hashCode());
-		int count = 1;
-        while (count < 11) {
-            System.out.println("Count is: " + count);
-            count++;
-        }
-        
-        List<String> list = new ArrayList<String>();
-        list.add("hello");
-        String s = list.get(0);   // no cast
-		
-		
-		Date date = new Date();
-		DateFormat dateFormat = DateFormat.getDateTimeInstance(DateFormat.LONG, DateFormat.LONG, locale);
-		
-		String formattedDate = dateFormat.format(date);
-		
-		model.addAttribute("serverTime", formattedDate );
-		
-		return "home";
-	}
 }

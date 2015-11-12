@@ -20,6 +20,7 @@ import java.util.List;
 
 import org.jboss.tools.example.springmvc.model.Member;
 //test comment here
+//another from tbranch2
 public interface MemberDao {
     public Member findById(Long id);
 
